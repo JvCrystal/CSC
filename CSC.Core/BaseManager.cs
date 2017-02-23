@@ -1,5 +1,6 @@
 ﻿using CSC.Core.Types;
 using CSC.DataLibrary;
+using System;
 using System.Data.Entity;
 using System.Linq;
 
@@ -83,7 +84,7 @@ namespace CSC.Core
         /// </summary>
         /// <param name="ID">主键</param>
         /// <returns>Code：0-删除失败；1-删除陈功；10-记录不存在</returns>
-        public virtual Response Delete(int ID)
+        public virtual Response Delete(Guid ID)
         {
             Response _response = new Response();
             var _entity = Find(ID);
@@ -115,7 +116,7 @@ namespace CSC.Core
         /// </summary>
         /// <param name="ID">主键</param>
         /// <returns>实体</returns>
-        public virtual T Find(int ID)
+        public virtual T Find(Guid ID)
         {
             return Repository.Find(ID);
         }

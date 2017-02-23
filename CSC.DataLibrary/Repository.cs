@@ -32,7 +32,7 @@ namespace CSC.DataLibrary
         /// </summary>
         /// <param name="ID">实体主键值</param>
         /// <returns></returns>
-        public T Find(int ID)
+        public T Find(Guid ID)
         {
             return DbContext.Set<T>().Find(ID);
         }
@@ -244,6 +244,8 @@ namespace CSC.DataLibrary
             return isSave ? DbContext.SaveChanges() : 0;
         }
 
+        //删除
+        #region Delete
         /// <summary>
         /// 删除实体【立即保存】
         /// </summary>
@@ -262,7 +264,8 @@ namespace CSC.DataLibrary
         /// <returns>在“isSave”为True时返回受影响的对象的数目，为False时直接返回0</returns>
         public int Delete(T entity, bool isSave)
         {
-            DbContext.Set<T>().Remove(entity);
+            DbContext.Set<T>().Attach(entity);
+            DbContext.Entry<T>(entity).State = EntityState.Deleted;
             return isSave ? DbContext.SaveChanges() : 0;
         }
 
@@ -276,6 +279,8 @@ namespace CSC.DataLibrary
             DbContext.Set<T>().RemoveRange(entities);
             return DbContext.SaveChanges();
         }
+        #endregion
+
         /// <summary>
         /// 记录数
         /// </summary>

@@ -10,9 +10,9 @@ namespace CSC.Core
         public CSCContext()
             : base("name=CSCContext")
         {
-            Database.SetInitializer<CSCContext>(new CreateDatabaseIfNotExists<CSCContext>());
         }
 
+        public virtual DbSet<Administrator> Administrators { get; set; }
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
@@ -24,6 +24,18 @@ namespace CSC.Core
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Administrator>()
+                .Property(e => e.Accounts)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Administrator>()
+                .Property(e => e.Password)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Administrator>()
+                .Property(e => e.LoginIP)
+                .IsUnicode(false);
+
             modelBuilder.Entity<RoleInfo>()
                 .HasMany(e => e.SysUserRoles)
                 .WithRequired(e => e.RoleInfo)
