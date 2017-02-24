@@ -27,8 +27,6 @@ namespace CSC.Web.Areas.Control.Controllers
             return View();
         }
 
-
-
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -125,7 +123,6 @@ namespace CSC.Web.Areas.Control.Controllers
             }
             return Json(_res);
         }
-
 
         /// <summary>
         /// 删除 

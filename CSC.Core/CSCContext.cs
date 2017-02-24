@@ -18,7 +18,6 @@ namespace CSC.Core
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CommonModel> CommonModels { get; set; }
         public virtual DbSet<RoleInfo> RoleInfoes { get; set; }
-        public virtual DbSet<SysUserRole> SysUserRoles { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
         public virtual DbSet<UserProfileInfo> UserProfileInfoes { get; set; }
 
@@ -37,18 +36,12 @@ namespace CSC.Core
                 .IsUnicode(false);
 
             modelBuilder.Entity<RoleInfo>()
-                .HasMany(e => e.SysUserRoles)
-                .WithRequired(e => e.RoleInfo)
-                .HasForeignKey(e => e.SysRoleID);
+                .HasOptional(e => e.UserInfo)
+                .WithRequired(e => e.RoleInfo);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.LoginIp)
                 .IsUnicode(false);
-
-            modelBuilder.Entity<UserInfo>()
-                .HasMany(e => e.SysUserRoles)
-                .WithRequired(e => e.UserInfo)
-                .HasForeignKey(e => e.SysUserID);
 
             modelBuilder.Entity<UserInfo>()
                 .HasOptional(e => e.UserProfileInfo)

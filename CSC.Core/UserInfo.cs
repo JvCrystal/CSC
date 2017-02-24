@@ -9,13 +9,9 @@ namespace CSC.Core
     [Table("UserInfo")]
     public partial class UserInfo
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public UserInfo()
-        {
-            SysUserRoles = new HashSet<SysUserRole>();
-        }
-
         public Guid ID { get; set; }
+
+        public Guid RoleId { get; set; }
 
         [StringLength(50)]
         public string UserName { get; set; }
@@ -35,8 +31,7 @@ namespace CSC.Core
 
         public DateTime? LoginDate { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SysUserRole> SysUserRoles { get; set; }
+        public virtual RoleInfo RoleInfo { get; set; }
 
         public virtual UserProfileInfo UserProfileInfo { get; set; }
     }

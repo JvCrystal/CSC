@@ -21,9 +21,11 @@ namespace CSC.Core.Types
         /// <summary>
         /// 总记录数
         /// </summary>
-        public int TotalNumber;/// <summary>
-                               /// 当前页记录列表
-                               /// </summary>
+        public int TotalNumber;
+
+        /// <summary>
+        /// 当前页记录列表
+        /// </summary>
         public List<T> Items { get; set; }
 
         public Paging()
