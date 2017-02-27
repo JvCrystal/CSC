@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "用户管理";
+}
+
+@section SideNav{@Html.Partial("SideNavPartialView")}
+
+<ol class="breadcrumb">
+    <li><span class="glyphicon glyphicon-home"></span>  @Html.ActionLink("首页", "Index", "Home")</li>
+    <li class="active">@Html.ActionLink("用户管理", "Index", "User")</li>
+</ol>
+
+<table id="usergrid"></table>
+@section style{
+    @Styles.Render("~/Content/bootstrapplugincss")
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrapplugin")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //表格
+            var $table = $('#usergrid');
+            $table.bootstrapTable({
+                showRefresh: true,
+                showColumns: true,
+                pagination: true,
+                sidePagination: "server",
+                pageList: "[5, 10, 20, 50, 100]",
+                method: "post",
+                url: "@Url.Action("PageListJson")",
+                columns: [
+                    { title: "ID", field: "ID" },
+                    { title: "角色", field: "RoleId" },
+                    { title: "用户名", field: "UserName" },
+                    { title: "名称", field: "DisplayName", formatter: function (value, row, index) { return "<a href='@Url.Action("Modify", "User")/" + row.ID + "'>" + value + "</a>" } },
+                    //{ title: "性别", field: "Sex" },
+                    { title: "Email", field: "Email", visible: false },
+                    { title: "最后登录时间", field: "LoginDate" },
+                    { title: "最后登录IP", field: "LoginIp", visible: false },
+                    { title: "注册时间", field: "RegistrationTime", visible: false },
+                    { title: "操作", field: "ID", formatter: function (value) { return "<a class='btn btn-sm btn-danger' data-operation='deleteuser' data-value='" + value + "'>删除</a>" } }
+                ],
+                onLoadSuccess: function () {
+                    //删除按钮
+                    //删除按钮结束
+                }
+            });
+            //表格结束
+        });
+    </script>
+}

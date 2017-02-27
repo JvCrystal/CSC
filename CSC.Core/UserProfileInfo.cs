@@ -1,16 +1,18 @@
 namespace CSC.Core
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web.Script.Serialization;
 
     [Table("UserProfileInfo")]
     public partial class UserProfileInfo
     {
         [Key]
-        public Guid ProfileID { get; set; }
+        public Guid UserID { get; set; }
 
         public int? Sex { get; set; }
 

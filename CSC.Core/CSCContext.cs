@@ -10,6 +10,10 @@ namespace CSC.Core
         public CSCContext()
             : base("name=CSCContext")
         {
+            //禁用延迟加载
+            this.Configuration.LazyLoadingEnabled = false;
+            //禁用代理
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Administrator> Administrators { get; set; }
@@ -36,8 +40,10 @@ namespace CSC.Core
                 .IsUnicode(false);
 
             modelBuilder.Entity<RoleInfo>()
-                .HasOptional(e => e.UserInfo)
-                .WithRequired(e => e.RoleInfo);
+                .HasMany(e => e.UserInfoes)
+                .WithRequired(e => e.RoleInfo)
+                .HasForeignKey(e => e.RoleId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UserInfo>()
                 .Property(e => e.LoginIp)
