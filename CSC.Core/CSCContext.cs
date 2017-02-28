@@ -10,10 +10,11 @@ namespace CSC.Core
         public CSCContext()
             : base("name=CSCContext")
         {
+            Database.SetInitializer<CSCContext>(new CreateDatabaseIfNotExists<CSCContext>());
             //禁用延迟加载
             this.Configuration.LazyLoadingEnabled = false;
             //禁用代理
-            this.Configuration.ProxyCreationEnabled = false;
+            //this.Configuration.ProxyCreationEnabled = false;
         }
 
         public virtual DbSet<Administrator> Administrators { get; set; }

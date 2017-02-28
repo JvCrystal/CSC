@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 
-namespace CSC.Core.General
+namespace CSC.Auxiliary
 {
     public class GetAddressIPMethod
     {

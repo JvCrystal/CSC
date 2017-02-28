@@ -1,4 +1,4 @@
-﻿using CSC.Core.Types;
+﻿using CSC.Auxiliary;
 using CSC.DataLibrary;
 using LinqKit;
 using System;

@@ -1,4 +1,4 @@
-﻿using CSC.Core.Types;
+﻿using CSC.Auxiliary;
 using System;
 using System.Collections.Generic;
 using System.Linq;

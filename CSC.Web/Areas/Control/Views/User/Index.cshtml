@@ -18,35 +18,129 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrapplugin")
     <script type="text/javascript">
+
         $(document).ready(function () {
             //表格
             var $table = $('#usergrid');
             $table.bootstrapTable({
-                showRefresh: true,
-                showColumns: true,
-                pagination: true,
-                sidePagination: "server",
+                showRefresh: true,                  //是否显示刷新按钮
+
+                showColumns: true,                  //是否显示所有的列
+
+                pagination: true,                   //是否显示分页（*）
+
+                sidePagination: "server", //服务端处理分页
+
                 pageList: "[5, 10, 20, 50, 100]",
+
+                pageNumber: 1,      //初始化加载第一页，默认第一页
+                pageSize: 10,      //每页的记录行数（*）
+
+                queryParamsType: '',
+
                 method: "post",
                 url: "@Url.Action("PageListJson")",
                 columns: [
+                    //{ checkbox: true },
                     { title: "ID", field: "ID" },
-                    { title: "角色", field: "RoleId" },
-                    { title: "用户名", field: "UserName" },
-                    { title: "名称", field: "DisplayName", formatter: function (value, row, index) { return "<a href='@Url.Action("Modify", "User")/" + row.ID + "'>" + value + "</a>" } },
+                    { title: "角色", field: "RoleId", visible: false },
+                    //{ title: "用户名", field: "UserName" },
+
+                    { title: "用户名", field: "UserName", formatter: function (value, row, index) { return "<a href='#' data-method='Modify' data-value=" + row.ID + ">" + value + "（" + row.DisplayName + ")</a>" } },
+
+                    //{ title: "名称", field: "DisplayName", formatter: function (value, row, index) { return "<a href='@Url.Action("Modify", "User")/" + row.ID + "'>" + value + "</a>" } },
                     //{ title: "性别", field: "Sex" },
-                    { title: "Email", field: "Email", visible: false },
-                    { title: "最后登录时间", field: "LoginDate" },
-                    { title: "最后登录IP", field: "LoginIp", visible: false },
-                    { title: "注册时间", field: "RegistrationTime", visible: false },
-                    { title: "操作", field: "ID", formatter: function (value) { return "<a class='btn btn-sm btn-danger' data-operation='deleteuser' data-value='" + value + "'>删除</a>" } }
+                    { title: "Email", field: "Email" },
+                    { title: "最后登录时间", field: "LoginDate", formatter: function (value) { return moment(value).format("YYYY-MM-DD HH:mm:ss") } },
+                    { title: "最后登录IP", field: "LoginIp" },
+                    { title: "注册时间", field: "RegistrationTime", formatter: function (value) { return moment(value).format("YYYY-MM-DD HH:mm:ss") } },
+                    { title: "操作", field: "ID", formatter: function (value) { return "<a class='btn btn-sm btn-danger' data-method='Delete' data-value='" + value + "'>删除</a>" } }
                 ],
                 onLoadSuccess: function () {
+
+                    //修改
+                    $("a[data-method='Modify']").click(function () {
+                        var id = $(this).attr("data-value");
+                        var modifyDialog = new BootstrapDialog({
+                            title: "<span class='glyphicon glyphicon-user'></span>修改用户",
+                            message: function (dialog) {
+                                var $message = $('<div></div>');
+                                var pageToLoad = dialog.getData('pageToLoad');
+                                $message.load(pageToLoad);
+
+                                return $message;
+                            },
+                            data: {
+                                'pageToLoad': '@Url.Action("Modify")/' + id
+                            },
+                            buttons: [{
+                                icon: "glyphicon glyphicon-plus",
+                                label: "保存",
+                                action: function (dialogItself) {
+                                    $.post($("form").attr("action"), $("form").serializeArray(), function (data) {
+                                        if (data.Code == 1) {
+                                            BootstrapDialog.show({
+                                                message: data.Message,
+                                                buttons: [{
+                                                    icon: "glyphicon glyphicon-ok",
+                                                    label: "确定",
+                                                    action: function (dialogItself) {
+                                                        $table.bootstrapTable("refresh");
+                                                        dialogItself.close();
+                                                        modifyDialog.close();
+                                                    }
+                                                }]
+
+                                            });
+                                        }
+                                        else BootstrapDialog.alert(data.Message);
+                                    }, "json");
+                                    $("form").validate();
+                                }
+                            }, {
+                                icon: "glyphicon glyphicon-remove",
+                                label: "关闭",
+                                action: function (dialogItself) {
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                        modifyDialog.open();
+                    });
+                    //修改结束
+
                     //删除按钮
+                    $("a[data-method='Delete']").click(function () {
+                        var id = $(this).attr("data-value");
+                        BootstrapDialog.confirm("你确定要删除" + $(this).parent().parent().find("td").eq(1).text() + "吗？\n 建议尽可能不要删除用户。", function (result) {
+                            if (result) {
+                                $.post("@Url.Action("Delete", "User")", { id: id }, function (data) {
+                                    if (data.Code == 1) {
+                                        BootstrapDialog.show({
+                                            message: "删除用户成功",
+                                            buttons: [{
+                                                icon: "glyphicon glyphicon-ok",
+                                                label: "确定",
+                                                action: function (dialogItself) {
+                                                    $table.bootstrapTable("refresh");
+                                                    dialogItself.close();
+                                                }
+                                            }]
+
+                                        });
+                                    }
+                                    else BootstrapDialog.alert(data.Message);
+                                }, "json");
+                            }
+                        });
+                    });
                     //删除按钮结束
                 }
             });
             //表格结束
         });
+
+
+
     </script>
 }

@@ -1,7 +1,8 @@
-﻿using CSC.Core;
-using CSC.Core.Types;
+﻿using CSC.Auxiliary;
+using CSC.Core;
 using CSC.Web.Areas.Control.Models;
 using CSC.Web.Models;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace CSC.Web.Areas.Control.Controllers
         /// <returns>Json</returns>
         public ActionResult PageListJson(Guid? roleID, string username, string name, int? sex, string email, int? pageNumber, int? pageSize, int? order)
         {
+
+
             Paging<UserInfo> _pagingUser = new Paging<UserInfo>();
             if (pageNumber != null && pageNumber > 0) _pagingUser.PageIndex = (int)pageNumber;
             if (pageSize != null && pageSize > 0) _pagingUser.PageSize = (int)pageSize;
@@ -79,7 +82,7 @@ namespace CSC.Web.Areas.Control.Controllers
                 _user.RoleId = userViewModel.RoleID;
                 _user.UserName = userViewModel.Username;
                 _user.DisplayName = userViewModel.Name;
-                _user.Password = Core.General.Security.SHA256(userViewModel.Password);
+                _user.Password = Security.SHA256(userViewModel.Password);
                 _user.Email = userViewModel.Email;
                 _user.RegistrationTime = System.DateTime.Now;
                 _user.IsActive = "1";
@@ -87,24 +90,24 @@ namespace CSC.Web.Areas.Control.Controllers
 
 
                 var _response = userManager.Add(_user);
-                if (_response.Code == 1)
-                {
-                    UserProfileInfo _profile = new UserProfileInfo();
-                    _profile.UserID = _user.ID;
-                    _profile.Sex = userViewModel.Sex;
+                //if (_response.Code == 1)
+                //{
+                //    UserProfileInfo _profile = new UserProfileInfo();
+                //    _profile.UserID = _user.ID;
+                //    _profile.Sex = userViewModel.Sex;
 
-                    UserProfileInfoManage userProfileManager = new UserProfileInfoManage();
-                    _response = userProfileManager.Add(_profile);
-                }
-                else ModelState.AddModelError("", _response.Message);
+                //    UserProfileInfoManage userProfileManager = new UserProfileInfoManage();
+                //    _response = userProfileManager.Add(_profile);
+                //}
+                //else ModelState.AddModelError("", _response.Message);
 
 
                 if (_response.Code == 1) return View("Prompt", new Prompt()
                 {
                     Title = "添加用户成功",
-                    Message = "您已成功添加了用户【" + _response.Data.Username + "（" + _response.Data.Name + "）】",
+                    Message = "您已成功添加了用户【" + _response.Data.UserName + "（" + _response.Data.DisplayName + "）】",
                     Buttons = new List<string> {"<a href=\"" + Url.Action("Index", "User") + "\" class=\"btn btn-default\">用户管理</a>",
-                 "<a href=\"" + Url.Action("Details", "User",new { id= _response.Data.UserID }) + "\" class=\"btn btn-default\">查看用户</a>",
+                 "<a href=\"" + Url.Action("Details", "User",new { id= _response.Data.ID }) + "\" class=\"btn btn-default\">查看用户</a>",
                  "<a href=\"" + Url.Action("Add", "User") + "\" class=\"btn btn-default\">继续添加</a>"}
                 });
                 else ModelState.AddModelError("", _response.Message);
@@ -121,6 +124,63 @@ namespace CSC.Web.Areas.Control.Controllers
             //角色列表结束
 
             return View(userViewModel);
+        }
+
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="id">用户主键</param>
+        /// <returns>分部视图</returns>
+        public ActionResult Modify(Guid id)
+        {
+            //角色列表
+            var _roles = new RoleInfoManager().FindList();
+            List<SelectListItem> _listItems = new List<SelectListItem>(_roles.Count());
+            foreach (var _role in _roles)
+            {
+                _listItems.Add(new SelectListItem() { Text = _role.Name, Value = _role.ID.ToString() });
+            }
+            ViewBag.Roles = _listItems;
+            //角色列表结束
+            return PartialView(userManager.Find(id));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Modify(Guid id, FormCollection form)
+        {
+            Response _resp = new Response();
+            var _user = userManager.Find(id);
+            if (TryUpdateModel(_user, new string[] { "RoleID", "DisplayName", "Email" }))
+            {
+                if (_user == null)
+                {
+                    _resp.Code = 0;
+                    _resp.Message = "用户不存在，可能已被删除，请刷新后重试";
+                }
+                else
+                {
+                    if (_user.Password != form["Password"].ToString()) _user.Password = Security.SHA256(form["Password"].ToString());
+                    _resp = userManager.Update(_user);
+                }
+            }
+            else
+            {
+                _resp.Code = 0;
+                _resp.Message = General.GetModelErrorString(ModelState);
+            }
+            return Json(_resp);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id">用户ID</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Delete(Guid id)
+        {
+            return Json(userManager.Delete(id));
         }
 
         /// <summary>

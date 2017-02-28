@@ -1,6 +1,5 @@
-﻿using CSC.Core;
-using CSC.Core.General;
-using CSC.Core.Types;
+﻿using CSC.Auxiliary;
+using CSC.Core;
 using CSC.Web.Areas.Control.Models;
 using System;
 using System.Collections.Generic;
@@ -134,7 +133,7 @@ namespace CSC.Web.Areas.Control.Controllers
         public JsonResult DeleteJson(List<Guid> ids)
         {
             int _total = ids.Count();
-            Response _res = new Core.Types.Response();
+            Response _res = new Response();
             Guid _currentAdminID = Guid.Parse(Session["AdminID"].ToString());
             if (ids.Contains(_currentAdminID))
             {
