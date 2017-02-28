@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSC.DataLibrary
+namespace CSC.Auxiliary
 {
     /// <summary>
     /// 排序参数
