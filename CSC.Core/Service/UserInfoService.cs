@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSC.Core
+namespace CSC.Core.Service
 {
-    public class UserInfoManager : BaseManager<UserInfo>
+    public class UserInfoService : BaseManager<UserInfo>
     {
         /// <summary>
         /// 分页列表

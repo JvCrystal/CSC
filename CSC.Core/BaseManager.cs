@@ -3,6 +3,7 @@ using CSC.DataLibrary;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace CSC.Core
 {
@@ -22,7 +23,9 @@ namespace CSC.Core
         /// </summary>
         public BaseManager() : this(ContextFactory.CurrentContext())
         {
+
         }
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -30,6 +33,7 @@ namespace CSC.Core
         public BaseManager(DbContext dbContext)
         {
             Repository = new Repository<T>(dbContext);
+
         }
 
         /// <summary>
@@ -128,6 +132,15 @@ namespace CSC.Core
         public IQueryable<T> FindList()
         {
             return Repository.FindList();
+        }
+
+        /// <summary>
+        /// 查找数据列表-【所有数据】
+        /// </summary>
+        /// <returns>所有数据</returns>
+        public IQueryable<T> FindList(Expression<Func<T, bool>> where)
+        {
+            return Repository.FindList(where);
         }
 
         /// <summary>

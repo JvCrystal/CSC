@@ -1,4 +1,5 @@
 ﻿using CSC.Core;
+using CSC.Core.Service;
 using CSC.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace CSC.Web.Areas.Control.Controllers
     [AdminAuthorize]
     public class RoleController : Controller
     {
-        private RoleInfoManager roleManager = new RoleInfoManager();
+        private RoleInfoService roleManager = new RoleInfoService();
 
         // GET: Control/Role
         public ActionResult Index()

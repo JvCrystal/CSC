@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSC.Core
+namespace CSC.Core.Service
 {
-    public class AdministratorManager : BaseManager<Administrator>
+    public class AdministratorService : BaseManager<Administrator>
     {
         /// <summary>
         /// 添加

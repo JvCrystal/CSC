@@ -57,7 +57,7 @@ namespace CSC.DataLibrary
         /// 查找实体列表
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> FindList()
+        public IQueryable<T> FindList(string includeProperties = "")
         {
             return DbContext.Set<T>();
         }
@@ -67,9 +67,17 @@ namespace CSC.DataLibrary
         /// </summary>
         /// <param name="where">查询Lambda表达式</param>
         /// <returns></returns>
-        public IQueryable<T> FindList(Expression<Func<T, bool>> where)
+        public IQueryable<T> FindList(Expression<Func<T, bool>> where, string includeProperties = "")
         {
-            return DbContext.Set<T>().Where(where);
+            IQueryable<T> query = DbContext.Set<T>();
+
+            foreach (var includeProperty in includeProperties.Split
+              (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.Where(where);
         }
 
         /// <summary>
@@ -215,7 +223,7 @@ namespace CSC.DataLibrary
         {
             if (pageIndex < 1) pageIndex = 1;
             if (pageSize < 1) pageSize = 10;
-            IQueryable<T> _list = DbContext.Set<T>().Where(where);
+            IQueryable<T> _list = DbContext.Set<T>().AsNoTracking().Where(where);
             var _orderParames = Expression.Parameter(typeof(T), "o");
             if (orderParams != null && orderParams.Length > 0)
             {
@@ -231,6 +239,9 @@ namespace CSC.DataLibrary
                     _list = _list.Provider.CreateQuery<T>(resultExp);
                 }
             }
+
+
+
             totalNumber = _list.Count();
             return _list.Skip((pageIndex - 1) * pageSize).Take(pageSize);
         }

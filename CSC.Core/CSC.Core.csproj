@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Administrator.cs" />
-    <Compile Include="AdministratorManager.cs" />
+    <Compile Include="Service\AdministratorService.cs" />
     <Compile Include="Article.cs" />
     <Compile Include="Attachment.cs" />
     <Compile Include="BaseManager.cs" />
@@ -68,11 +68,11 @@
     <Compile Include="CSCContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleInfo.cs" />
-    <Compile Include="RoleInfoManager.cs" />
+    <Compile Include="Service\RoleInfoService.cs" />
     <Compile Include="UserInfo.cs" />
-    <Compile Include="UserInfoManager.cs" />
+    <Compile Include="Service\UserInfoService.cs" />
     <Compile Include="UserProfileInfo.cs" />
-    <Compile Include="UserProfileInfoManage.cs" />
+    <Compile Include="Service\UserProfileInfoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -88,6 +88,7 @@
       <Name>CSC.DataLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

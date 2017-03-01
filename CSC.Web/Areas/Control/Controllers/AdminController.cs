@@ -1,5 +1,6 @@
 ﻿using CSC.Auxiliary;
 using CSC.Core;
+using CSC.Core.Service;
 using CSC.Web.Areas.Control.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace CSC.Web.Areas.Control.Controllers
     [AdminAuthorize]
     public class AdminController : Controller
     {
-        private AdministratorManager adminManager = new AdministratorManager();
+        private AdministratorService adminManager = new AdministratorService();
 
         /// <summary>
         /// 登录

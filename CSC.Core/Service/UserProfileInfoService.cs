@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSC.Core
+namespace CSC.Core.Service
 {
-    public class UserProfileInfoManage : BaseManager<UserProfileInfo>
+    public class UserProfileInfoService : BaseManager<UserProfileInfo>
     {
     }
 }

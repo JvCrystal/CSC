@@ -1,5 +1,6 @@
 ﻿using CSC.Auxiliary;
 using CSC.Core;
+using CSC.Core.Service;
 using CSC.Web.Areas.Control.Models;
 using CSC.Web.Models;
 using Microsoft.AspNet.Identity;
@@ -14,7 +15,7 @@ namespace CSC.Web.Areas.Control.Controllers
     [AdminAuthorize]
     public class UserController : Controller
     {
-        private UserInfoManager userManager = new UserInfoManager();
+        private UserInfoService userManager = new UserInfoService();
 
         // GET: Control/User
         public ActionResult Index()
@@ -41,6 +42,21 @@ namespace CSC.Web.Areas.Control.Controllers
             Paging<UserInfo> _pagingUser = new Paging<UserInfo>();
             if (pageNumber != null && pageNumber > 0) _pagingUser.PageIndex = (int)pageNumber;
             if (pageSize != null && pageSize > 0) _pagingUser.PageSize = (int)pageSize;
+
+
+            //var _paging = userManager.FindPageList(_pagingUser, roleID, username, name, sex, email, null).Items.Select(
+            //                e => new
+            //                {
+            //                    Id = e.ID,
+            //                    RoleId = e.RoleId,
+            //                    UserName = e.UserName,
+            //                    DisplayName = e.DisplayName,
+            //                    Email = e.Email,
+            //                    LoginDate = e.LoginDate,
+            //                    LoginIp = e.LoginIp,
+            //                    RegistrationTime = e.RegistrationTime,
+            //                });
+
             var _paging = userManager.FindPageList(_pagingUser, roleID, username, name, sex, email, null);
 
             //var userList = new { total = _paging.TotalNumber, rows = _paging.Items };
@@ -48,6 +64,13 @@ namespace CSC.Web.Areas.Control.Controllers
             //string jsonString = JsonConvert.SerializeObject(userList);
 
             //return Json(jsonString);
+
+
+
+
+
+
+
             return Json(new { total = _paging.TotalNumber, rows = _paging.Items });
         }
 
@@ -58,7 +81,7 @@ namespace CSC.Web.Areas.Control.Controllers
         public ActionResult Add()
         {
             //角色列表
-            var _roles = new RoleInfoManager().FindList();
+            var _roles = new RoleInfoService().FindList();
             List<SelectListItem> _listItems = new List<SelectListItem>(_roles.Count());
             foreach (var _role in _roles)
             {
@@ -114,7 +137,7 @@ namespace CSC.Web.Areas.Control.Controllers
             }
 
             //角色列表
-            var _roles = new RoleInfoManager().FindList();
+            var _roles = new RoleInfoService().FindList();
             List<SelectListItem> _listItems = new List<SelectListItem>(_roles.Count());
             foreach (var _role in _roles)
             {
@@ -134,7 +157,7 @@ namespace CSC.Web.Areas.Control.Controllers
         public ActionResult Modify(Guid id)
         {
             //角色列表
-            var _roles = new RoleInfoManager().FindList();
+            var _roles = new RoleInfoService().FindList();
             List<SelectListItem> _listItems = new List<SelectListItem>(_roles.Count());
             foreach (var _role in _roles)
             {
