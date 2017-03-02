@@ -10,6 +10,7 @@ namespace CSC.Core
     [Table("UserInfo")]
     public partial class UserInfo
     {
+        [Key]
         public Guid ID { get; set; }
 
         public Guid RoleId { get; set; }
@@ -32,7 +33,9 @@ namespace CSC.Core
 
         public DateTime? LoginDate { get; set; }
 
+
         public virtual RoleInfo RoleInfo { get; set; }
+
 
         public virtual UserProfileInfo UserProfileInfo { get; set; }
     }

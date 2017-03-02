@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace CSC.Web.Areas.Control.Controllers
 {
     [AdminAuthorize]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private UserInfoService userManager = new UserInfoService();
 
@@ -59,19 +59,14 @@ namespace CSC.Web.Areas.Control.Controllers
 
             var _paging = userManager.FindPageList(_pagingUser, roleID, username, name, sex, email, null);
 
-            //var userList = new { total = _paging.TotalNumber, rows = _paging.Items };
-
-            //string jsonString = JsonConvert.SerializeObject(userList);
-
-            //return Json(jsonString);
+            var userList = new { total = _paging.TotalNumber, rows = _paging.Items };
 
 
 
+            return Json(userList);
 
 
-
-
-            return Json(new { total = _paging.TotalNumber, rows = _paging.Items });
+            //return Json(new { total = _paging.TotalNumber, rows = _paging.Items });
         }
 
         /// <summary>

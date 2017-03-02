@@ -223,7 +223,7 @@ namespace CSC.DataLibrary
         {
             if (pageIndex < 1) pageIndex = 1;
             if (pageSize < 1) pageSize = 10;
-            IQueryable<T> _list = DbContext.Set<T>().AsNoTracking().Where(where);
+            IQueryable<T> _list = DbContext.Set<T>().Where(where);
             var _orderParames = Expression.Parameter(typeof(T), "o");
             if (orderParams != null && orderParams.Length > 0)
             {
