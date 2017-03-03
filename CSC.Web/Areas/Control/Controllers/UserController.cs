@@ -43,30 +43,9 @@ namespace CSC.Web.Areas.Control.Controllers
             if (pageNumber != null && pageNumber > 0) _pagingUser.PageIndex = (int)pageNumber;
             if (pageSize != null && pageSize > 0) _pagingUser.PageSize = (int)pageSize;
 
-
-            //var _paging = userManager.FindPageList(_pagingUser, roleID, username, name, sex, email, null).Items.Select(
-            //                e => new
-            //                {
-            //                    Id = e.ID,
-            //                    RoleId = e.RoleId,
-            //                    UserName = e.UserName,
-            //                    DisplayName = e.DisplayName,
-            //                    Email = e.Email,
-            //                    LoginDate = e.LoginDate,
-            //                    LoginIp = e.LoginIp,
-            //                    RegistrationTime = e.RegistrationTime,
-            //                });
-
             var _paging = userManager.FindPageList(_pagingUser, roleID, username, name, sex, email, null);
 
-            var userList = new { total = _paging.TotalNumber, rows = _paging.Items };
-
-
-
-            return Json(userList);
-
-
-            //return Json(new { total = _paging.TotalNumber, rows = _paging.Items });
+            return Json(new { total = _paging.TotalNumber, rows = _paging.Items });
         }
 
         /// <summary>

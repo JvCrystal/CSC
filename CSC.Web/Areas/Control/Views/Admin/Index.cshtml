@@ -1,7 +1,9 @@
 ﻿@{
     ViewBag.Title = "管理员";
 }
+
 @section SideNav{@Html.Partial("SideNavPartialView")}
+
 <ol class="breadcrumb">
     <li><span class="glyphicon glyphicon-home"></span>  @Html.ActionLink("首页", "Index", "Home")</li>
     <li class="active">@Html.ActionLink("管理员", "Index", "Admin")</li>

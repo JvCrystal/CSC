@@ -57,7 +57,7 @@ namespace CSC.DataLibrary
         /// 查找实体列表
         /// </summary>
         /// <returns></returns>
-        public IQueryable<T> FindList(string includeProperties = "")
+        public IQueryable<T> FindList()
         {
             return DbContext.Set<T>();
         }

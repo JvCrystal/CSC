@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace CSC.Web.Areas.Control.Controllers
 {
     [AdminAuthorize]
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private RoleInfoService roleManager = new RoleInfoService();
 

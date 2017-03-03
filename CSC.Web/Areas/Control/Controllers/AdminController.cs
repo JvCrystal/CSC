@@ -13,7 +13,7 @@ using System.Web.Mvc;
 namespace CSC.Web.Areas.Control.Controllers
 {
     [AdminAuthorize]
-    public class AdminController : Controller
+    public class AdminController : BaseController
     {
         private AdministratorService adminManager = new AdministratorService();
 

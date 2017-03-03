@@ -6,6 +6,7 @@ namespace CSC.Core
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
+
     [Table("Administrator")]
     public partial class Administrator
     {
